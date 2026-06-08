@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="kk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mini Paint</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="window-controls" aria-hidden="true">
+          <span class="traffic red"></span>
+          <span class="traffic yellow"></span>
+          <span class="traffic green"></span>
+        </div>
+
+        <button class="glass-command undo-command" id="undoTop" type="button" title="Undo">
+          <span aria-hidden="true">↶</span>
+          <span>Undo</span>
+        </button>
+
+        <div class="brand">
+          <h1>Mini Paint</h1>
+          <p>Apple стиліндегі қарапайым сурет салу қолданбасы</p>
+        </div>
+
+        <div class="file-actions" aria-label="Файл әрекеттері">
+          <button class="glass-command" id="newCanvas" type="button" title="Жаңа кенеп">
+            <span aria-hidden="true">□</span>
+            <span>Жаңа</span>
+          </button>
+          <button class="glass-command primary" id="saveImage" type="button" title="PNG ретінде сақтау">
+            <span aria-hidden="true">⇩</span>
+            <span>Сақтау</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="toolbar" aria-label="Құралдар">
+          <section class="tool-section">
+            <h2>Құралдар</h2>
+            <div class="tool-grid" role="group" aria-label="Сурет салу құралдары">
+              <button class="tool active" type="button" data-tool="pencil" title="Қарындаш" aria-pressed="true">
+                <span aria-hidden="true">✎</span>
+                <span>Қалам</span>
+              </button>
+              <button class="tool" type="button" data-tool="eraser" title="Өшіргіш" aria-pressed="false">
+                <span aria-hidden="true">⌫</span>
+                <span>Өшіру</span>
+              </button>
+              <button class="tool" type="button" data-tool="line" title="Сызық" aria-pressed="false">
+                <span aria-hidden="true">╱</span>
+                <span>Сызық</span>
+              </button>
+              <button class="tool" type="button" data-tool="rectangle" title="Төртбұрыш" aria-pressed="false">
+                <span aria-hidden="true">▭</span>
+                <span>Шаршы</span>
+              </button>
+              <button class="tool" type="button" data-tool="circle" title="Шеңбер" aria-pressed="false">
+                <span aria-hidden="true">○</span>
+                <span>Шеңбер</span>
+              </button>
+              <button class="tool" type="button" data-tool="bucket" title="Толтыру" aria-pressed="false">
+                <span aria-hidden="true">◫</span>
+                <span>Бояу</span>
+              </button>
+              <button class="tool" type="button" data-tool="text" title="Мәтін" aria-pressed="false">
+                <span aria-hidden="true">T</span>
+                <span>Мәтін</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="tool-section">
+            <h2>Түстер</h2>
+            <label class="control-row">
+              <span>Негізгі</span>
+              <input id="primaryColor" type="color" value="#111111" />
+            </label>
+            <label class="control-row">
+              <span>Фон</span>
+              <input id="fillColor" type="color" value="#ffffff" />
+            </label>
+            <div class="swatches" id="swatches" aria-label="Дайын түстер"></div>
+          </section>
+
+          <section class="tool-section">
+            <h2>Өлшем</h2>
+            <label class="slider-row" for="brushSize">
+              <span>Қалыңдық</span>
+              <output id="brushSizeValue" for="brushSize">6</output>
+            </label>
+            <input id="brushSize" type="range" min="1" max="48" value="6" />
+
+            <label class="check-row">
+              <input id="shapeFill" type="checkbox" />
+              <span>Пішінді толтыру</span>
+            </label>
+          </section>
+
+          <section class="tool-section">
+            <h2>Тарих</h2>
+            <div class="history-actions">
+              <button class="icon-command" id="undo" type="button" title="Болдырмау" aria-label="Болдырмау">↶</button>
+              <button class="icon-command" id="redo" type="button" title="Қайтару" aria-label="Қайтару">↷</button>
+              <button class="icon-command danger" id="clearCanvas" type="button" title="Тазалау" aria-label="Тазалау">×</button>
+            </div>
+          </section>
+        </aside>
+
+        <section class="canvas-stage" aria-label="Кенеп аймағы">
+          <div class="canvas-toolbar">
+            <label>
+              <span>Ені</span>
+              <input id="canvasWidth" type="number" min="320" max="2400" value="1100" />
+            </label>
+            <label>
+              <span>Биіктігі</span>
+              <input id="canvasHeight" type="number" min="240" max="1800" value="720" />
+            </label>
+            <button class="glass-command compact" id="resizeCanvas" type="button">Өлшемді қолдану</button>
+            <p id="status" role="status">Дайын</p>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="paintCanvas" width="1100" height="720" aria-label="Сурет салу кенебі"></canvas>
+            <input id="textInput" type="text" maxlength="80" aria-label="Кенепке мәтін енгізу" />
+          </div>
+        </section>
+      </main>
+
+      <footer class="bottombar" aria-label="Төменгі басқару панелі">
+        <button class="glass-command undo-command" id="undoBottom" type="button" title="Undo">
+          <span aria-hidden="true">↶</span>
+          <span>Undo</span>
+        </button>
+        <span class="bottom-info">Қателессеңіз, Undo арқылы соңғы әрекетті қайтара аласыз.</span>
+      </footer>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
